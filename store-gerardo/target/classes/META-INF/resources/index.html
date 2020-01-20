@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Store</title>
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            position: absolute;   
+        }  
+    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script type="application/javascript" src="index.js"></script>
+</head>
+<div>
+    <div class="container-fluid">
+        <div class="row bg-dark">
+            <div class="col-12">
+                <h1 class="text-white">Store</h1>
+            </div> 
+        </div>
+        <hr>
+        <div class="row align-items-center"">
+            <div class="col-3"> 
+                <div class="align-middle" >
+                    <div class="row ">
+                        <div class="col-12">
+                            <button type="button"  onclick="showCompanies()" class="btn btn-info   btn-sm btn-block"> Empresas</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-12">
+                            <button type="button"  onclick="showProducts()" class="btn btn-info btn-sm btn-block" id="buttonProducts"> Productos</button>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            <div class="col-9" >
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card align-middle" >
+                            <div class="card-body">
+                                <div class="row ">
+                                    <div class="col-6">
+                                        <nav aria-label="breadcrumb">
+                                            <ol class="breadcrumb">
+                                                <li id="title" class="breadcrumb-item">Empresas</li>
+                                            </ol>
+                                        </nav>
+                                    </div>
+                                </div> 
+                                <div id="button"></div>
+                                <div style=" height:400px;overflow-y:auto;width: 100%;">
+                                    <div id="list-companies"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div keyboard="false" data-backdrop="static" backdrop="static" class="modal fade" id="addModalCompanie" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Nueva Empresa</h5> 
+            </div> 
+            <div class="modal-body">
+                <div class="form-group"> 
+                    <input type="text" class="form-control" id="nameCompanie" placeholder="Nombre"> 
+                </div> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                <button onclick="addCompanie()" class="btn btn-primary">Guardar</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div keyboard="false" data-backdrop="static" backdrop="static" class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Editar Empresa</h5> 
+            </div>
+            <div class="modal-body">
+                <div class="form-group"> 
+                    <input type="text" class="form-control" id="nameEditCompanie" placeholder="Nombre"> 
+                </div> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                <button onclick="editCompanie()"  class="btn btn-primary">Guardar</button>
+            </div> 
+          </div>
+        </div>
+    </div>
+    <div keyboard="false" data-backdrop="static" backdrop="static" class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminar Empresa</h5> 
+                </div> 
+                <div class="modal-body">
+                    <div class="form-group"> 
+                        <label >¿Desea eliminar la empresa?</label>
+                    </div> 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                    <button onclick="deleteCompanie()" class="btn btn-primary">Aceptar</button>
+                </div> 
+            </div>
+        </div>
+    </div>
+    <div keyboard="false" data-backdrop="static" backdrop="static" class="modal fade " id="modalAddProduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Nuevo Producto</h5> 
+            </div> 
+            <div class="modal-body"> 
+                <div class="row">
+                    <div class="col-5">        
+                        <div class="form-group"> 
+                            <label for="nameEditProduct">Nombre</label>
+                            <input type="text" class="form-control" id="nameProduct" placeholder="Nombre">
+                        </div> 
+                    </div>
+                    <div class="col-3">        
+                        <div class="form-group"> 
+                            <label for="stockEditProduct">Stock</label>
+                            <input type="number" min="1" class="form-control" id="stockProduct" placeholder="Stock">
+                        </div> 
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group"> 
+                            <label for="costEditProduct">Costo</label>
+                            <input type="number" min="1" class="form-control" id="costProduct" placeholder="Costo"> 
+                        </div> 
+                    </div>
+                </div>
+                <div class="row"> 
+                    <div class="col-3">
+                        <div class="form-group"> 
+                            <label for="priceEditProduct">Precio</label>
+                            <input type="number" class="form-control" id="priceProduct" placeholder="Precio"> 
+                        </div> 
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group"> 
+                            <div class="row">
+                                <label for="ivaProduct">IVA</label>
+                                <select  class="form-control" id="ivaProduct" >
+                                    <option>Si</option>
+                                    <option>No</option> 
+                                </select>
+                            </div>
+                        </div> 
+                    </div>                   
+                    <div class="col-5">
+                        <div class="form-group"> 
+                            <label>Empresa</label>
+                            <div class=" container row">
+                                <div id="listCompaniesProduct"></div>
+                            </div>
+                        </div> 
+                    </div>
+                </div> 
+                <hr>
+                <div class="row container">
+                    <h5>Variaciones del producto</h5> 
+                </div>
+                <div class="row">
+                    <div class="col-5">   
+                        <div class="form-group"> 
+                            <label for="nameVariation">Nombre</label>
+                            <input type="text" class="form-control" id="nameVariation" placeholder="Nombre">
+                        </div> 
+                    </div>
+                    <div class="col-3">        
+                        <div class="form-group"> 
+                            <label for="brandVariation">Brand</label>
+                            <input type="text" class="form-control" id="brandVariation" placeholder="Brand">
+                        </div> 
+                    </div>
+                    <div class="col-3">
+                        <a href="#" onclick="addVariationList()" class="btn btn-success  btn-sm btn-block"  >Agregar</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group"> 
+                            <label for="stockVariation">Stock</label>
+                            <input type="number" min="1" class="form-control" id="stockVariation" placeholder="Stock">
+                        </div> 
+                    </div>  
+                    <div class="col-3">
+                        <div class="form-group"> 
+                            <label for="skuVariation">SKU</label>
+                            <input type="text" class="form-control" id="skuVariation" placeholder="SKU"> 
+                        </div> 
+                    </div>
+                </div> 
+                <hr>
+                <div class="row container">
+                    <div style=" height:250px;overflow-y:auto;width: 100%;">
+                        <div id="list-variations"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                <button onclick="addProduct()" class="btn btn-primary">Guardar</button>
+            </div> 
+          </div>
+        </div>
+    </div>
+    <div keyboard="false" data-backdrop="static" backdrop="static" class="modal fade " id="modalProduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Editar Producto</h5> 
+            </div> 
+            <div class="modal-body"> 
+                <div class="row">
+                    <div class="col-5">        
+                        <div class="form-group"> 
+                            <label for="nameEditProduct">Nombre</label>
+                            <input type="text" class="form-control" id="nameEditProduct" placeholder="Nombre">
+                        </div> 
+                    </div>
+                    <div class="col-3">        
+                        <div class="form-group"> 
+                            <label for="stockEditProduct">Stock</label>
+                            <input type="number" min="1" class="form-control" id="stockEditProduct" placeholder="Stock">
+                        </div> 
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group"> 
+                            <label for="costEditProduct">Costo</label>
+                            <input type="number" min="1" class="form-control" id="costEditProduct" placeholder="Costo"> 
+                        </div> 
+                    </div>
+                </div>
+                <div class="row"> 
+                    <div class="col-3">
+                        <div class="form-group"> 
+                            <label for="priceEditProduct">Precio</label>
+                            <input type="number" class="form-control" id="priceEditProduct" placeholder="Precio"> 
+                        </div> 
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group"> 
+                            <div class="row">
+                                <label for="ivaEditProduct">IVA</label>
+                                <select  class="form-control" id="ivaEditProduct" >
+                                    <option>Si</option>
+                                    <option>No</option> 
+                                </select>
+                            </div>
+                        </div> 
+                    </div>                   
+                    <div class="col-5">
+                        <div class="form-group"> 
+                            <label>Empresa</label>
+                            <div class=" container row">
+                                <div id="listCompaniesProduct"></div>
+                            </div>
+                        </div> 
+                    </div>
+                </div> 
+                <hr>
+                <div class="row container">
+                    <h5>Variaciones del producto</h5> 
+                </div>
+                <div class="row">
+                    <div class="col-5">   
+                        <div class="form-group"> 
+                            <label for="nameEditVariation">Nombre</label>
+                            <input type="text" class="form-control" id="nameEditVariation" placeholder="Nombre">
+                        </div> 
+                    </div>
+                    <div class="col-3">        
+                        <div class="form-group"> 
+                            <label for="brandEditVariation">Brand</label>
+                            <input type="text" class="form-control" id="brandEditVariation" placeholder="Brand">
+                        </div> 
+                    </div>
+                    <div class="col-3">
+                        <a href="#" onclick="editVariationList()" class="btn btn-success  btn-sm btn-block"  >Agregar</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group"> 
+                            <label for="stockEditVariation">Stock</label>
+                            <input type="number" min="1" class="form-control" id="stockEditVariation" placeholder="Stock">
+                        </div> 
+                    </div>  
+                    <div class="col-3">
+                        <div class="form-group"> 
+                            <label for="skuEditVariation">SKU</label>
+                            <input type="text" class="form-control" id="skuEditVariation" placeholder="SKU"> 
+                        </div> 
+                    </div>
+                </div> 
+                <hr>
+                <div class="row container">
+                    <div style=" height:250px;overflow-y:auto;width: 100%;">
+                        <div id="listEditVariations"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                <button onclick="editProduct()" class="btn btn-primary">Guardar</button>
+            </div> 
+          </div>
+        </div>
+    </div>
+    <div keyboard="false" data-backdrop="static" backdrop="static" class="modal fade" id="deleteModalProduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Eliminar Producto</h5> 
+            </div> 
+            <div class="modal-body">
+                <div class="form-group"> 
+                    <label >¿Desea eliminar el producto?</label>
+                </div> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                <button onclick="deleteProduct()" class="btn btn-primary">Aceptar</button>
+            </div> 
+        </div>
+        </div>
+    </div>
+    <div keyboard="false" data-backdrop="static" backdrop="static" class="modal fade" id="deleteModalVariation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Eliminar Producto</h5> 
+            </div>
+            <form>
+                <div class="modal-body">
+                    <div class="form-group"> 
+                        <label >¿Desea eliminar la variación?</label>
+                    </div> 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                    <button onclick="deleteVariation()" class="btn btn-primary">Aceptar</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+</body>
+</html>  
