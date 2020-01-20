@@ -8,5 +8,8 @@ Uso de base de datos MySQL.
 
 Configuraciones:
 
-Crear base de datos.
-Crear usuario llamado "storeuser".
+Crear base de datos con archivo "store.sql".
+Crear usuario llamado "storeuser" y dar permisos al usuario.
+
+CREATE USER 'storeuser'@'localhost';
+grant all on store.* to 'storeuser'@'localhost';
